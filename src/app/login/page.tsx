@@ -1,4 +1,5 @@
-import Input from "@/components/Input"
+'use client'
+
 import LoginForm from "@/components/LoginForm"
 
 function Login() {
