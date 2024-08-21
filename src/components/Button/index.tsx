@@ -9,7 +9,7 @@ function Button({label, ...props}: ButtonProps) {
     <>
       <button 
         {...props}
-        className="h-8 bg-black text-white text-center font-bold text-xl rounded-md"
+        className="h-9 bg-black text-white text-center font-bold text-xl rounded-md"
       >
         {label}
       </button>

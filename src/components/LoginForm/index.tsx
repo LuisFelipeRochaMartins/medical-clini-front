@@ -1,58 +1,67 @@
-import { FormEvent, useState } from "react"
-import Button from "../Button"
-import Input from "../Input"
+"use client";
 
-function LoginForm() {
-  const [usuario, setUsuario] = useState<string>('')
-  const [senha, setSenha] = useState<string>('')
+import { FormEvent } from "react";
+import Button from "../Button";
+import Input from "../Input";
+import { login } from "@/auth";
 
-  function validateLogin(usuario: string, senha: string) {
-    fetch("http://localhost:8080/login", {
+async function validateLogin(formData: FormData): Promise<string | undefined> {
+  try {
+    const user = { usuario: formData.get("usuario"), senha: formData.get("senha") };
+    const response = await fetch("http://localhost:8080/login", {
       method: 'POST',
       headers: {
-        'Content-Type': "application/json"
+        'Content-Type': "application/json",
       },
-      body: JSON.stringify({usuario, senha})
-    })
-    .then(response => {
-      if (!response.ok) {
-        return 
-      }
-      return response.json()
-    })
-    .then(data => {
-      return data.token
-    })
+      body: JSON.stringify(user),
+    });
+
+    if (!response.ok) {
+      throw new Error('Login failed!');
+    }
+
+    const data = await response.json();
+    return data?.token;
+  } catch (error) {
+    console.error(error);
+    return undefined;
   }
-
-  function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    validateLogin(usuario, senha)
-  }
-
-  return (  
-    <form 
-      className="flex flex-col justify-center gap-2 mb-4" 
-      onSubmit={submit}>
-
-      <p className="self-center text-black font-bold text-3xl">Login</p>
-      <Input 
-        valueChange={value => setUsuario(value)}
-        value={usuario}
-        label="Usuário"
-      />
-      <Input 
-        value={senha}
-        valueChange={value => setSenha(value)}
-        label="Senha"
-        type="password"
-      />
-      <Button 
-        
-        label="Enviar"
-      />
-    </form> 
-  )
 }
 
-export default LoginForm
+async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+
+  const form = new FormData(e.currentTarget);
+  const token = await validateLogin(form);
+
+  if (token) {
+    await login(token);
+  }
+};
+
+function LoginForm() {
+  return (
+    <form 
+      className="flex flex-col justify-center gap-2" 
+      onSubmit={handleSubmit} 
+    >
+      <p className="self-center text-black font-bold text-3xl">Login</p>
+      <Input 
+        label="Usuário"
+        name="usuario"
+        required
+      />
+      <Input 
+        label="Senha"
+        type="password"
+        name="senha"
+        required
+      />
+      <Button 
+        label="Enviar"
+      />
+    </form>
+  );
+}
+
+export default LoginForm;
