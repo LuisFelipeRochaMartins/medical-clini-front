@@ -7,7 +7,7 @@ import { login } from "@/auth";
 
 async function validateLogin(formData: FormData): Promise<string | undefined> {
   try {
-    const user = { usuario: formData.get("usuario"), senha: formData.get("senha") };
+    const user = { usuario: formData.get("usuario"), senha: formData.get("senha") }
     const response = await fetch("http://localhost:8080/login", {
       method: 'POST',
       headers: {
@@ -17,27 +17,26 @@ async function validateLogin(formData: FormData): Promise<string | undefined> {
     });
 
     if (!response.ok) {
-      throw new Error('Login failed!');
+      throw new Error('Login failed!')
     }
 
-    const data = await response.json();
-    return data?.token;
+    const data = await response.json()
+    return data?.token
   } catch (error) {
-    console.error(error);
-    return undefined;
+    return undefined
   }
 }
 
 async function handleSubmit(e: FormEvent<HTMLFormElement>) {
   e.preventDefault();
 
-  const form = new FormData(e.currentTarget);
-  const token = await validateLogin(form);
+  const form = new FormData(e.currentTarget)
+  const token = await validateLogin(form)
 
   if (token) {
-    await login(token);
+    await login(token)
   }
-};
+}
 
 function LoginForm() {
   return (
@@ -61,7 +60,7 @@ function LoginForm() {
         label="Enviar"
       />
     </form>
-  );
+  )
 }
 
 export default LoginForm;
