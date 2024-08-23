@@ -23,7 +23,7 @@ async function validateLogin(formData: FormData): Promise<string | undefined> {
     const data = await response.json()
     return data?.token
   } catch (error) {
-    return undefined
+      throw error;
   }
 }
 

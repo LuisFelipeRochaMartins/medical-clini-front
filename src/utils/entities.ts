@@ -1,5 +1,5 @@
 export async function getEntityById(session: string, entity: string, id: number) {
-  const response = await fetch(`localhost:8080/${entity}/${id}`, {
+  const response = await fetch(`http://localhost:8080/${entity}/${id}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${session}`
@@ -9,7 +9,7 @@ export async function getEntityById(session: string, entity: string, id: number)
 }
 
 export async function getAllEntities(session: string, entity: string) {
-  const response = await fetch(`localhost:8080/${entity}`, {
+  const response = await fetch(`http://localhost:8080/${entity}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${session}`
@@ -21,7 +21,7 @@ export async function getAllEntities(session: string, entity: string) {
 
 export async function createEntity(session: string, entity: string, form: FormData) {
   const medico = getEntityFromFormData(form)
-  const response = await fetch(`localhost:8080/${entity}`, {
+  const response = await fetch(`http://localhost:8080/${entity}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export async function createEntity(session: string, entity: string, form: FormDa
 
 export async function updateEntity(session: String, entity: string, form: FormData) {
   const medico = getEntityFromFormData(form)
-  const response = await fetch(`localhost:8080/${entity}`, {
+  const response = await fetch(`http://localhost:8080/${entity}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export async function updateEntity(session: String, entity: string, form: FormDa
 }
 
 export async function deleteEntity(session: string, entity: string, id: number) {
-  const response = await fetch(`localhost:8080/${entity}/${id}`, {
+  const response = await fetch(`http://localhost:8080/${entity}/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

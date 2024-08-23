@@ -8,17 +8,21 @@ const secret = process.env.secret;
 const key = new TextEncoder().encode(secret);
 
 export async function decrypt(input: string): Promise<any> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ["HS256"],
-  });
-  return payload;
+  try {
+    const payload = await jwtVerify(input, key, {
+      algorithms: ["HS256"],
+    });
+    return payload;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function getSession() {
   const session = cookies().get("session")?.value;
 
   if (!session) {
-    redirect("/");
+    return;
   }
 
   return await decrypt(session);
